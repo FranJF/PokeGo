@@ -3,6 +3,10 @@
 Hobby project that gave me the excuse to try new technologies, the first version was written with Express.js framework but I end up changing to Next.js as the new React's official docs recomended.
 
 
+## In construction
+You have maybe seen radical changes in the structure, in testing differentes approaches.
+
+
 ## Technologies Used
 
 [![TypeScript](https://img.shields.io/badge/typescript-0067a5?style=for-the-badge&logo=typescript&logoColor=white&labelColor=101010)]()
