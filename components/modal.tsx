@@ -14,46 +14,15 @@ import { Button } from "@nextui-org/button";
 import { Checkbox } from "@nextui-org/checkbox";
 import { Switch } from "@nextui-org/switch";
 import { StartIcon } from "./icons";
-import Image from "next/image";
-import { PokemonShiny } from "@/services/pokemon/get-shiny";
+import { usePokemon } from "@/hooks/usePokemon";
 
 export default function PokemonModal({ selection }: any) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [pokemon, setPokemon] = useState({} as PokemonShiny);
-  const [pokemonImage, setPokemonImage] = useState({} as any);
   const [pokemonIsShiny, setPokemonsIsShiny] = useState(false);
+  const [pokemon, pokemonImage] = usePokemon({ selectedPokemon: selection });
 
   useEffect(() => {
-    const shinyInLocalStorage = localStorage.getItem("shiny-" + selection);
-    if (shinyInLocalStorage) {
-      setPokemon(JSON.parse(shinyInLocalStorage));
-      return;
-    }
-    const getShiny: any = fetch(`/api/shiny/${selection}`).then((data: any) =>
-      data.json(),
-    );
-    getShiny.then((data: any) => {
-      setPokemon(data);
-      localStorage.setItem("shiny-" + selection, JSON.stringify(data));
-    });
-  }, [selection]);
-
-  useEffect(() => {
-    const imageInLocalStorage = localStorage.getItem("image-" + selection);
-    if (imageInLocalStorage) {
-      setPokemonImage(JSON.parse(imageInLocalStorage));
-      onOpen();
-      return;
-    }
-
-    const getImage = fetch(`/api/image/${selection}`).then((data: any) =>
-      data.json(),
-    );
-    getImage.then((data: any) => {
-      setPokemonImage(data);
-      onOpen();
-      localStorage.setItem("image-" + selection, JSON.stringify(data));
-    });
+    onOpen();
   }, [pokemon]);
 
   const handleOnSwitch = () => {
