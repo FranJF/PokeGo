@@ -2,7 +2,7 @@ export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
   name: "PokeGo",
-  description: "Proyecto de codigo abierto para la comunidad de Pokemon Go",
+  description: "Proyecto de codigo abierto hobby",
   navItems: [
     {
       label: "Home",
