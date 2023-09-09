@@ -1,9 +1,9 @@
 import { AutoCompleteInput } from "@/components/autocomplete-input";
 import { title } from "@/components/primitives";
-import { PokemonController } from "@/controllers/pokemon";
+import { getAll } from "@/services/pokemon/get-all";
 
 export default async function ShinyPage() {
-  const data: any = await PokemonController.getAll();
+  const data: any = getAll();
 
   return (
     <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">

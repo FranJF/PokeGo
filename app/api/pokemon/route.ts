@@ -1,7 +1,7 @@
-import { PokemonController } from '@/controllers/pokemon'
-import { NextResponse } from 'next/server'
+import { NextResponse } from "next/server";
+import { getAll } from "@/services/pokemon/get-all";
 
 export async function GET(request: Request) {
-    const data = await PokemonController.getAll()
-    return NextResponse.json(data)
+  const data = getAll();
+  return NextResponse.json(data);
 }

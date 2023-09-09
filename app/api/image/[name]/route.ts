@@ -1,11 +1,13 @@
-import { NextResponse } from 'next/server'
-import { PokemonController } from '@/controllers/pokemon'
+import { NextResponse } from "next/server";
+import { getImage } from "@/services/pokemon/get-image";
 
 export async function GET(
-    request: Request,
-    { params }: { params: { name: string } }
+  request: Request,
+  { params }: { params: { name: string } },
 ) {
-    const name = params.name
-    const data = await PokemonController.getImageByName(name)
-    return NextResponse.json(data)
+  const name = params.name;
+  const pokemon = await getImage(name);
+  if (!pokemon)
+    return NextResponse.json({ message: "Pokemon image not found" });
+  return NextResponse.json(pokemon);
 }

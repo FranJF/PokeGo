@@ -3,11 +3,7 @@ import { Select, SelectItem } from "@nextui-org/select";
 import PokemonModal from "./modal";
 
 export const PokemonSelect = ({ data }: any) => {
-  const [selected, setselected] = useState(null);
-  const handleChange = (event: any) => {
-    const pokemon = event.target.value;
-    setselected(pokemon);
-  };
+  const [selected, setSelected]: any = useState(null);
 
   return (
     <>
@@ -16,7 +12,7 @@ export const PokemonSelect = ({ data }: any) => {
         label="Pokemon"
         placeholder="Selecciona un Pokemon"
         className="max-w-lg"
-        onChange={handleChange}
+        onChange={(e) => setSelected(e.target.value)}
       >
         {data.map((pokemon: any) => (
           <SelectItem key={pokemon}>{pokemon}</SelectItem>
@@ -24,7 +20,7 @@ export const PokemonSelect = ({ data }: any) => {
       </Select>
 
       {selected && (
-        <PokemonModal selection={selected} onClose={() => setselected(null)} />
+        <PokemonModal selection={selected} onClose={() => setSelected(null)} />
       )}
     </>
   );
