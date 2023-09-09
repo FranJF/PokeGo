@@ -9,6 +9,7 @@ import {
   ModalFooter,
   useDisclosure,
 } from "@nextui-org/modal";
+import { Avatar } from "@nextui-org/avatar";
 import { Button } from "@nextui-org/button";
 import { Checkbox } from "@nextui-org/checkbox";
 import { Switch } from "@nextui-org/switch";
@@ -63,6 +64,8 @@ export default function PokemonModal({ selection }: any) {
     ? pokemonImage.front_shiny
     : pokemonImage.front_default;
 
+  const borderColor = pokemonIsShiny ? "secondary" : "default";
+
   return (
     <>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -70,19 +73,22 @@ export default function PokemonModal({ selection }: any) {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Informacion shiny: {selection}
+                <h2> {selection} </h2>
               </ModalHeader>
+
               <ModalBody>
-                <Image
+                <Avatar
+                  isBordered
+                  color={borderColor}
+                  className="w-3/4 h-3/4 self-center"
                   src={imagen}
-                  width={500}
-                  height={500}
-                  alt={
-                    "Pixel art image from the Pokemon named: " + pokemon.name
-                  }
+                  imgProps={{
+                    alt: "Pixel art image from the Pokemon named: " + selection,
+                  }}
                 />
 
                 <Switch
+                  className="mt-2"
                   defaultSelected={pokemonIsShiny}
                   size="lg"
                   color="secondary"

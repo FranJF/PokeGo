@@ -32,7 +32,7 @@ export const AutoCompleteInput = ({ data }: any) => {
           onClear={() => setDataInput("")}
         />
       </div>
-      <div className="inline-block w-full h-full max-w-lg text-center justify-center">
+      <div className="inline-block w-full h-full max-w-lg text-center justify-center items-center">
         {dataSelect.length > 0 && <PokemonSelect data={dataSelect} />}
       </div>
     </>
