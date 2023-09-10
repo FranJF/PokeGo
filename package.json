@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@nextui-org/avatar": "^2.0.18",
+    "@nextui-org/badge": "^2.0.16",
     "@nextui-org/button": "2.0.9",
     "@nextui-org/checkbox": "^2.0.19",
     "@nextui-org/code": "2.0.7",
@@ -23,6 +24,7 @@
     "@nextui-org/switch": "2.0.9",
     "@nextui-org/system": "2.0.5",
     "@nextui-org/theme": "2.0.4",
+    "@nextui-org/tooltip": "^2.0.21",
     "@nextui-org/use-infinite-scroll": "^2.1.0",
     "@react-aria/ssr": "^3.7.1",
     "@react-aria/visually-hidden": "^3.8.3",

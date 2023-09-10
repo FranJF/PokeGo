@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import {
   Modal,
@@ -12,8 +13,6 @@ import {
 import { Avatar } from "@nextui-org/avatar";
 import { Button } from "@nextui-org/button";
 import { Checkbox } from "@nextui-org/checkbox";
-import { Switch } from "@nextui-org/switch";
-import { StartIcon } from "./icons";
 import { usePokemon } from "@/hooks/usePokemon";
 
 export default function PokemonModal({ selection }: any) {
@@ -24,10 +23,6 @@ export default function PokemonModal({ selection }: any) {
   useEffect(() => {
     onOpen();
   }, [pokemon]);
-
-  const handleOnSwitch = () => {
-    setPokemonsIsShiny(!pokemonIsShiny);
-  };
 
   const imagen = pokemonIsShiny
     ? pokemonImage.front_shiny
@@ -46,60 +41,63 @@ export default function PokemonModal({ selection }: any) {
               </ModalHeader>
 
               <ModalBody>
-                <Avatar
-                  isBordered
-                  color={borderColor}
-                  className="w-3/4 h-3/4 self-center"
-                  src={imagen}
-                  imgProps={{
-                    alt: "Pixel art image from the Pokemon named: " + selection,
+                <motion.div
+                  whileHover={{
+                    scale: 1.1,
+                    transition: { duration: 0.3 },
                   }}
-                />
+                  className="flex justify-center"
+                >
+                  <Avatar
+                    isBordered
+                    color={borderColor}
+                    src={imagen}
+                    imgProps={{
+                      alt:
+                        "Pixel art image from the Pokemon named: " + selection,
+                    }}
+                    className="w-3/4 h-3/4 self-center cursor-pointer"
+                    onClick={() => setPokemonsIsShiny(!pokemonIsShiny)}
+                  />
+                </motion.div>
 
-                <Switch
-                  className="mt-2"
-                  defaultSelected={pokemonIsShiny}
-                  size="lg"
-                  color="secondary"
-                  startContent={<StartIcon />}
-                  endContent={<StartIcon />}
-                  onChange={handleOnSwitch}
-                >
-                  Ver shiny
-                </Switch>
+                <div className="flex flex-col gap-1 mt-2"></div>
 
-                <Checkbox
-                  value="found_wild"
-                  isDisabled
-                  isSelected={pokemon.found_wild}
-                  color="secondary"
-                >
-                  Salvaje
-                </Checkbox>
-                <Checkbox
-                  value="found_raid"
-                  isDisabled
-                  isSelected={pokemon.found_raid}
-                  color="secondary"
-                >
-                  Incursiones
-                </Checkbox>
-                <Checkbox
-                  value="found_research"
-                  isDisabled
-                  isSelected={pokemon.found_research}
-                  color="secondary"
-                >
-                  Investigaciones
-                </Checkbox>
-                <Checkbox
-                  value="found_egg"
-                  isDisabled
-                  isSelected={pokemon.found_egg}
-                  color="secondary"
-                >
-                  Huevos
-                </Checkbox>
+                <div className="flex flex-col gap-3 items-start content-start">
+                  <p>Se puede encontrar shiny de estas formas:</p>
+                  <Checkbox
+                    value="found_wild"
+                    isDisabled
+                    isSelected={pokemon.found_wild}
+                    color="secondary"
+                  >
+                    Salvaje
+                  </Checkbox>
+                  <Checkbox
+                    value="found_raid"
+                    isDisabled
+                    isSelected={pokemon.found_raid}
+                    color="secondary"
+                  >
+                    Incursiones
+                  </Checkbox>
+                  <Checkbox
+                    value="found_research"
+                    isDisabled
+                    isSelected={pokemon.found_research}
+                    color="secondary"
+                  >
+                    Investigaciones
+                  </Checkbox>
+                  <Checkbox
+                    value="found_egg"
+                    isDisabled
+                    isSelected={pokemon.found_egg}
+                    color="secondary"
+                  >
+                    Huevos
+                  </Checkbox>
+                </div>
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
