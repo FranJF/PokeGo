@@ -17,18 +17,13 @@ import { usePokemon } from "@/hooks/usePokemon";
 
 export default function PokemonModal({ selection }: any) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [pokemonIsShiny, setPokemonsIsShiny] = useState(false);
-  const [pokemon, pokemonImage] = usePokemon({ selectedPokemon: selection });
+  const { pokemon, pokemonIsShiny, pokemonImage, setPokemonsIsShiny } =
+    usePokemon({ selectedPokemon: selection });
+  const borderColor = pokemonIsShiny ? "secondary" : "default";
 
   useEffect(() => {
     onOpen();
   }, [pokemon]);
-
-  const imagen = pokemonIsShiny
-    ? pokemonImage.front_shiny
-    : pokemonImage.front_default;
-
-  const borderColor = pokemonIsShiny ? "secondary" : "default";
 
   return (
     <>
@@ -51,12 +46,12 @@ export default function PokemonModal({ selection }: any) {
                   <Avatar
                     isBordered
                     color={borderColor}
-                    src={imagen}
+                    src={pokemonImage}
                     imgProps={{
                       alt:
                         "Pixel art image from the Pokemon named: " + selection,
                     }}
-                    className="w-3/4 h-3/4 self-center cursor-pointer"
+                    className="w-3/4 h-3/4 self-center"
                     onClick={() => setPokemonsIsShiny(!pokemonIsShiny)}
                   />
                 </motion.div>

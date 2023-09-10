@@ -11,7 +11,7 @@ export const AutoCompleteInput = ({ data }: any) => {
   useEffect(() => {
     if (dataInput.length >= 3) {
       const nombrePokemon = data.filter((item: string) =>
-        item.includes(dataInput),
+        item.toLowerCase().includes(dataInput.toLowerCase()),
       );
       setDataSelect(nombrePokemon);
       return;
