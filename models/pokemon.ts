@@ -4,7 +4,6 @@ import { PokemonEvolution } from "@/services/pokemon/get-evolution";
 import { Client } from "@/database/client";
 
 export type Pokemon = {
-  id: number;
   name: string;
   shiny: PokemonShiny;
   image: PokemonImage;
@@ -12,18 +11,33 @@ export type Pokemon = {
 };
 
 export class PokemonModel {
-  constructor(
-    public id: number,
-    public name: string,
-    public shiny: PokemonShiny,
-    public image: PokemonImage,
-    public evolutions: PokemonEvolution,
-  ) {}
+  constructor(public name: string) {}
+
+  async get(): Promise<Pokemon> {
+    const db = await Client.connect();
+    const collection = db.collection("pokemon");
+    const pokemon = collection.findOne({ name: this.name });
+    if (!pokemon) return {} as Pokemon;
+    return pokemon as Pokemon;
+  }
+
+  async create(
+    name: string,
+    shiny: PokemonShiny,
+    image: PokemonImage,
+    evolutions: PokemonEvolution,
+  ): Promise<Pokemon> {
+    const db = await Client.connect();
+    const collection = db.collection("pokemon");
+    const pokemon = { name, shiny, image, evolutions };
+    collection.insertOne(pokemon);
+    return pokemon as Pokemon;
+  }
 
   async exists(): Promise<boolean> {
     const db = await Client.connect();
     const collection = db.collection("pokemon");
-    const exists = collection.findOne({ id: this.id });
+    const exists = collection.findOne({ name: this.name });
     if (!exists) return false;
     return true;
   }
@@ -31,6 +45,6 @@ export class PokemonModel {
   async save(): Promise<void> {
     const db = await Client.connect();
     const collection = db.collection("pokemon");
-    collection.updateOne({ id: this.id }, { $set: this }, { upsert: true });
+    collection.updateOne({ name: this.name }, { $set: this }, { upsert: true });
   }
 }

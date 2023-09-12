@@ -11,7 +11,7 @@ export type PokemonShiny = {
 };
 
 export async function getShiny(n: string): Promise<PokemonShiny | any> {
-  const name = n.toLowerCase();
+  const name = n.toLowerCase().split("-")[0];
   const shinys = await fetch(URL).then((res) => res.json());
 
   const shinyPokemonsParsed: object[] = Object.values(shinys);

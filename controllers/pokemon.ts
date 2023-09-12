@@ -14,19 +14,14 @@ export class PokemonController {
     const all: string[] = await getAll();
     if (!all.includes(name)) return {} as Pokemon;
 
+    const model = new PokemonModel(name);
+    const exists = await model.exists();
+    if (exists) return model.get();
+
     const shiny: PokemonShiny = await getShiny(name);
     const image: PokemonImage = await getImage(name);
     const evolutions: PokemonEvolution = await getEvolution(name);
-
-    const model = new PokemonModel(shiny.id, name, shiny, image, evolutions);
-    const exists = model.exists();
-
-    return {
-      id: shiny.id,
-      name: name,
-      shiny,
-      image,
-      evolutions,
-    } as Pokemon;
+    const pokemon: Pokemon = await model.create(name, shiny, image, evolutions);
+    return pokemon;
   }
 }

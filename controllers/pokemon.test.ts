@@ -1,14 +1,45 @@
 import { expect, test, describe } from "bun:test";
 import { PokemonController } from "./pokemon";
+import { Pokemon } from "@/models/pokemon";
 
-describe("", () => {
-  test("should return images", async () => {});
+describe("Pokemon controller should be able to get a lot of data from services", () => {
+  test("should return pokemon", async () => {
+    const bulbasaur = await PokemonController.getPokemon("bulbasaur");
+    const charmander = await PokemonController.getPokemon("charmander");
+    const squirtle = await PokemonController.getPokemon("squirtle");
+    const rayquaza = await PokemonController.getPokemon("rayquaza");
+    const giratinaO = await PokemonController.getPokemon("giratina-origin");
+    const giratinaA = await PokemonController.getPokemon("giratina-altered");
+
+    const pokemons = [
+      bulbasaur,
+      charmander,
+      squirtle,
+      rayquaza,
+      giratinaO,
+      // giratinaA,
+    ];
+
+    pokemons.forEach((pokemon) => {
+      console.log(pokemon);
+      checkPokemon(pokemon);
+    });
+  });
 });
 
-const checkImage = (image: any) => {
-  expect(image).toBeDefined();
-  expect(image).hasOwnProperty("front_default");
-  expect(image).hasOwnProperty("front_shiny");
-  expect(image).hasOwnProperty("image");
-  expect(image).hasOwnProperty("name");
+const checkPokemon = (pokemon: Pokemon) => {
+  expect(pokemon.name).toBeDefined();
+  expect(pokemon.shiny).toBeDefined();
+  expect(pokemon.shiny.egg).toBeDefined();
+  expect(pokemon.shiny.wild).toBeDefined();
+  expect(pokemon.shiny.raid).toBeDefined();
+  expect(pokemon.shiny.research).toBeDefined();
+  expect(pokemon.shiny.photobomb).toBeDefined();
+  expect(pokemon.image).toBeDefined();
+  expect(pokemon.image.image).toBeDefined();
+  expect(pokemon.image.default).toBeDefined();
+  expect(pokemon.image.shiny).toBeDefined();
+  expect(pokemon.evolutions).toBeDefined();
+  expect(pokemon.evolutions.chain).toBeDefined();
+  expect(pokemon.evolutions.index).toBeDefined();
 };
