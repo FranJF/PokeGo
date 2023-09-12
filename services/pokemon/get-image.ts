@@ -1,53 +1,13 @@
-import { ClientV2 } from "@/database/client-v2";
 import { PokemonClient } from "pokenode-ts";
 
-type PokemonImage = {
-  name: string;
+export type PokemonImage = {
   image: string;
-  front_default: string;
-  front_shiny: string;
+  default: string;
+  shiny: string;
 };
 
-export async function getImage(n: string): Promise<any> {
+export async function getImage(n: string): Promise<PokemonImage> {
   const name = n.toLowerCase();
-  const db = await ClientV2.connect();
-  const collection = db.collection("images");
-
-  const imageInDB = await getImageFromDB(collection, name);
-  if (imageInDB) return imageInDB;
-
-  const imageInAPI = await getImageFromAPI(name);
-  if (imageInAPI) {
-    collection.insertOne(imageInAPI);
-    return imageInAPI;
-  }
-
-  return { message: "Pokemon image not found" };
-}
-
-const getImageFromDB = async (
-  collection: any,
-  name: string,
-): Promise<PokemonImage | undefined> => {
-  const imageInDB: any[] = await collection.find({}).toArray();
-
-  if (imageInDB.length > 0) {
-    const data = imageInDB.find((p) => p.name == name);
-    if (data) {
-      const pokemonImage: PokemonImage = {
-        front_default: data.front_default,
-        front_shiny: data.front_shiny,
-        image: data.front_default,
-        name: data.name,
-      };
-      return pokemonImage;
-    }
-  }
-};
-
-const getImageFromAPI = async (
-  name: string,
-): Promise<PokemonImage | undefined> => {
   const api = new PokemonClient();
   const request: any = api.getPokemonByName(name);
 
@@ -59,15 +19,13 @@ const getImageFromAPI = async (
       if (!data.sprites.front_shiny) return;
 
       const pokemonImage: PokemonImage = {
-        front_default: data.sprites.front_default,
-        front_shiny: data.sprites.front_shiny,
         image: data.sprites.front_default,
-        name: data.name,
+        default: data.sprites.front_default,
+        shiny: data.sprites.front_shiny,
       };
       return pokemonImage;
     })
-    .catch((err: any) => {
-      console.log(err);
-      return;
+    .catch(() => {
+      return { error: "Pokemon image not found" };
     });
-};
+}

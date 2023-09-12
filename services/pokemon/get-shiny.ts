@@ -1,45 +1,33 @@
-import { ClientV2 } from "@/database/client-v2";
-
 const URL = "https://pogoapi.net/api/v1/shiny_pokemon.json";
 
 export type PokemonShiny = {
   id: number;
-  name: string;
-  found_wild: boolean;
-  found_raid: boolean;
-  found_egg: boolean;
-  found_research: boolean;
-  found_evolution: boolean;
-  found_photobomb: boolean;
+  wild: boolean;
+  raid: boolean;
+  egg: boolean;
+  research: boolean;
+  evolution: boolean;
+  photobomb: boolean;
 };
 
-export async function getShiny(n: string): Promise<PokemonShiny | undefined> {
-  const db = await ClientV2.connect();
-  let shinys;
-
-  try {
-    const data: any = await db.collection("shinys").find({}).toArray();
-    if (data) {
-      shinys = data;
-    } else {
-      await fetch(URL)
-        .then((res) => res.json())
-        .then((data) => (shinys = data));
-    }
-  } catch (err) {
-    await fetch(URL)
-      .then((res) => res.json())
-      .then((data) => (shinys = data));
-  }
-
-  if (!shinys) return;
-
+export async function getShiny(n: string): Promise<PokemonShiny | any> {
   const name = n.toLowerCase();
+  const shinys = await fetch(URL).then((res) => res.json());
 
-  const shinyPokemonsParsed: PokemonShiny[] = Object.values(shinys);
-  const wantedPokemon: PokemonShiny | undefined = shinyPokemonsParsed.find(
-    (p: PokemonShiny) => p.name.toLowerCase() == name,
+  const shinyPokemonsParsed: object[] = Object.values(shinys);
+  const wantedPokemon: any = shinyPokemonsParsed.find(
+    (p: any) => p.name.toLowerCase() == name,
   );
 
-  return wantedPokemon;
+  if (!wantedPokemon) return { error: "Pokemon shiny not found" };
+
+  return {
+    id: wantedPokemon.id,
+    wild: wantedPokemon.found_wild,
+    raid: wantedPokemon.found_raid,
+    egg: wantedPokemon.found_egg,
+    research: wantedPokemon.found_research,
+    evolution: wantedPokemon.found_evolution,
+    photobomb: wantedPokemon.found_photobomb,
+  };
 }

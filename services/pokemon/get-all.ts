@@ -1,5 +1,5 @@
 import allPokemon from "@/models/data/pokemon_names.json";
 
-export function getAll() {
+export async function getAll() {
   return allPokemon;
 }

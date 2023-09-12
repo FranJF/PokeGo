@@ -1,20 +1,27 @@
 import { NextResponse } from "next/server";
-import { ClientV2 } from "@/database/client-v2";
+import { Client } from "@/database/client";
+import { getAll } from "@/services/pokemon/get-all";
+import { Pokemon } from "@/models/pokemon";
+import { PokemonController } from "@/controllers/pokemon";
 
 export async function GET() {
-  await syncShinys();
+  await syncAllPokemons();
   return NextResponse.json({ ok: true });
 }
 
-async function syncShinys() {
-  const db = await ClientV2.connect();
+async function syncAllPokemons() {
+  const db = await Client.connect();
 
-  const collection = db.collection("shinys");
-  const urlShinys = "https://pogoapi.net/api/v1/shiny_pokemon.json";
-  let shinys: any = null;
-  await fetch(urlShinys)
-    .then((res) => res.json())
-    .then((data) => (shinys = data));
-  shinys = Object.values(shinys);
-  collection.insertMany(shinys);
+  const collection = db.collection("pokemon");
+  const all: string[] = await getAll();
+  all.forEach(async (name) => {
+    const pokemon: Pokemon = await PokemonController.getPokemon(name);
+    if (pokemon) {
+      collection.updateOne(
+        { id: pokemon.id },
+        { $set: pokemon },
+        { upsert: true },
+      );
+    }
+  });
 }

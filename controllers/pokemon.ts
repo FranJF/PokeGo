@@ -1,0 +1,32 @@
+import { getImage, PokemonImage } from "@/services/pokemon/get-image";
+import { getShiny, PokemonShiny } from "@/services/pokemon/get-shiny";
+import {
+  getEvolution,
+  PokemonEvolution,
+} from "@/services/pokemon/get-evolution";
+import { getAll } from "@/services/pokemon/get-all";
+import { Pokemon, PokemonModel } from "@/models/pokemon";
+
+export class PokemonController {
+  static async getPokemon(name: string): Promise<Pokemon> {
+    name = name.toLowerCase();
+
+    const all: string[] = await getAll();
+    if (!all.includes(name)) return {} as Pokemon;
+
+    const shiny: PokemonShiny = await getShiny(name);
+    const image: PokemonImage = await getImage(name);
+    const evolutions: PokemonEvolution = await getEvolution(name);
+
+    const model = new PokemonModel(shiny.id, name, shiny, image, evolutions);
+    const exists = model.exists();
+
+    return {
+      id: shiny.id,
+      name: name,
+      shiny,
+      image,
+      evolutions,
+    } as Pokemon;
+  }
+}
