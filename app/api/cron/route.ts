@@ -17,7 +17,7 @@ async function syncAllPokemons() {
   all.forEach(async (name) => {
     const pokemon: Pokemon = await PokemonController.getPokemon(name);
     if (pokemon) {
-      collection.updateOne(
+      await collection.updateOne(
         { name: pokemon.name },
         { $set: pokemon },
         { upsert: true },
