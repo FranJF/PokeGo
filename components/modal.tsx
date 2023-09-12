@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   Modal,
   ModalContent,
@@ -61,33 +61,33 @@ export default function PokemonModal({ selection }: any) {
                 <div className="flex flex-col gap-3 items-start content-start">
                   <p>Se puede encontrar shiny de estas formas:</p>
                   <Checkbox
-                    value="found_wild"
+                    value="wild"
                     isDisabled
-                    isSelected={pokemon.found_wild}
+                    isSelected={pokemon.wild}
                     color="secondary"
                   >
                     Salvaje
                   </Checkbox>
                   <Checkbox
-                    value="found_raid"
+                    value="raid"
                     isDisabled
-                    isSelected={pokemon.found_raid}
+                    isSelected={pokemon.raid}
                     color="secondary"
                   >
                     Incursiones
                   </Checkbox>
                   <Checkbox
-                    value="found_research"
+                    value="research"
                     isDisabled
-                    isSelected={pokemon.found_research}
+                    isSelected={pokemon.research}
                     color="secondary"
                   >
                     Investigaciones
                   </Checkbox>
                   <Checkbox
-                    value="found_egg"
+                    value="egg"
                     isDisabled
-                    isSelected={pokemon.found_egg}
+                    isSelected={pokemon.egg}
                     color="secondary"
                   >
                     Huevos
