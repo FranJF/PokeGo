@@ -54,6 +54,7 @@
     "typescript": "5.0.4"
   },
   "devDependencies": {
+    "bun-types": "^1.0.1",
     "ts-standard": "^12.0.2"
   }
 }
