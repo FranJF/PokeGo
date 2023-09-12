@@ -4,7 +4,7 @@ import { Input } from "@nextui-org/input";
 import { PokemonSelect } from "@/components/select";
 import { useEffect, useState } from "react";
 
-export const AutoCompleteInput = ({ data }: any) => {
+export const PokemonSearch = ({ data }: any) => {
   const [dataInput, setDataInput] = useState("");
   const [dataSelect, setDataSelect] = useState([]);
 
@@ -21,13 +21,13 @@ export const AutoCompleteInput = ({ data }: any) => {
 
   return (
     <>
-      <div className="inline-block w-full h-full max-w-lg text-center justify-center">
+      <div className="inline-block w-full h-full max-w-lg text-center justify-center mb-4">
         <Input
           isClearable
           type="text"
           value={dataInput}
           variant="bordered"
-          label="Pokemon"
+          label="Search a Pokemon"
           onChange={(e) => setDataInput(e.target.value)}
           onClear={() => setDataInput("")}
         />

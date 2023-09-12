@@ -1,76 +1,59 @@
 import { useEffect, useState } from "react";
-import { PokemonShiny } from "@/services/pokemon/get-shiny";
+import { Pokemon } from "@/models/pokemon";
 
-const ENDPOINT_SHINY = "/api/shiny/";
-const ENDPOINT_IMAGE = "/api/image/";
+const ENDPOINT = "/api/pokemon/";
 
 export const usePokemon = ({ selectedPokemon }: any) => {
   selectedPokemon = selectedPokemon.toLowerCase();
+  const emptyPokemon = {
+    name: "",
+    shiny: {
+      egg: false,
+      evolution: false,
+      found_evolution: false,
+      found_egg: false,
+      found_photobomb: false,
+      found_raid: false,
+      found_research: false,
+      found_wild: false,
+      id: 0,
+      photobomb: false,
+      raid: false,
+      research: false,
+      wild: false,
+    },
+    image: { default: "", image: "", shiny: "" },
+    evolutions: { chain: [], index: 0 },
+  } as Pokemon;
 
-  const [pokemon, setPokemon] = useState({} as PokemonShiny);
-  const [pokemonIsShiny, setPokemonsIsShiny] = useState(false);
-  const [dataImagen, setDataImagen] = useState({} as any);
-  const [pokemonImage, setImage] = useState(undefined);
+  const [pokemon, setPokemon] = useState(emptyPokemon);
+  const [isShiny, setShiny] = useState(false);
 
   useEffect(() => {
-    if (pokemonIsShiny) {
-      setImage(dataImagen.front_shiny);
+    const pokemonInLocalStorage = localStorage.getItem(selectedPokemon);
+    if (pokemonInLocalStorage) {
+      setPokemon(JSON.parse(pokemonInLocalStorage));
       return;
     }
-    setImage(dataImagen.front_default);
-  }, [pokemonIsShiny, dataImagen]);
 
-  useEffect(() => {
-    const shinyInLocalStorage = localStorage.getItem(
-      "shiny-" + selectedPokemon,
-    );
-    if (shinyInLocalStorage) {
-      setPokemon(JSON.parse(shinyInLocalStorage));
-      return;
-    }
-    fetch(ENDPOINT_SHINY + selectedPokemon.split("-")[0])
-      .then((res: any) => {
+    fetch(ENDPOINT + selectedPokemon)
+      .then((res) => {
         if (!res.ok) throw new Error("HTTP error " + res.status);
         return res.json();
       })
       .then((data: any) => {
+        console.log(data);
         setPokemon(data);
-        localStorage.setItem("shiny-" + selectedPokemon, JSON.stringify(data));
+        localStorage.setItem(selectedPokemon, JSON.stringify(data));
       })
       .catch((err) => {
-        setPokemon({} as PokemonShiny);
+        setPokemon({} as Pokemon);
       });
   }, [selectedPokemon]);
 
-  useEffect(() => {
-    const imageInLocalStorage = localStorage.getItem(
-      "image-" + selectedPokemon,
-    );
-    if (imageInLocalStorage) {
-      setDataImagen(JSON.parse(imageInLocalStorage));
-      return;
-    }
-
-    fetch(ENDPOINT_IMAGE + selectedPokemon)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("HTTP error " + res.status);
-        }
-        return res.json();
-      })
-      .then((data: any) => {
-        setDataImagen(data);
-        localStorage.setItem("image-" + selectedPokemon, JSON.stringify(data));
-      })
-      .catch((err) => {
-        setDataImagen(null);
-      });
-  }, [pokemon]);
-
   return {
     pokemon,
-    pokemonIsShiny,
-    pokemonImage,
-    setPokemonsIsShiny,
+    isShiny,
+    setShiny,
   };
 };

@@ -40,8 +40,8 @@ export class PokemonModel {
   async exists(): Promise<boolean> {
     const db = await Client.connect();
     const collection = db.collection("pokemon");
-    const exists = collection.findOne({ name: this.name });
-    if (!exists) return false;
+    const data = await collection.find({ name: this.name }).toArray();
+    if (data.length == 0) return false;
     return true;
   }
 

@@ -17,9 +17,11 @@ import { usePokemon } from "@/hooks/usePokemon";
 
 export default function PokemonModal({ selection }: any) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const { pokemon, pokemonIsShiny, pokemonImage, setPokemonsIsShiny } =
-    usePokemon({ selectedPokemon: selection });
-  const borderColor = pokemonIsShiny ? "secondary" : "default";
+  const { pokemon, isShiny, setShiny } = usePokemon({
+    selectedPokemon: selection,
+  });
+  const borderColor = isShiny ? "secondary" : "default";
+  const imagen = isShiny ? pokemon.image.shiny : pokemon.image.default;
 
   useEffect(() => {
     onOpen();
@@ -46,13 +48,13 @@ export default function PokemonModal({ selection }: any) {
                   <Avatar
                     isBordered
                     color={borderColor}
-                    src={pokemonImage}
+                    src={imagen}
                     imgProps={{
                       alt:
                         "Pixel art image from the Pokemon named: " + selection,
                     }}
                     className="w-3/4 h-3/4 self-center"
-                    onClick={() => setPokemonsIsShiny(!pokemonIsShiny)}
+                    onClick={() => setShiny(!isShiny)}
                   />
                 </motion.div>
 
@@ -63,7 +65,7 @@ export default function PokemonModal({ selection }: any) {
                   <Checkbox
                     value="wild"
                     isDisabled
-                    isSelected={pokemon.wild}
+                    isSelected={pokemon.shiny.wild}
                     color="secondary"
                   >
                     Salvaje
@@ -71,7 +73,7 @@ export default function PokemonModal({ selection }: any) {
                   <Checkbox
                     value="raid"
                     isDisabled
-                    isSelected={pokemon.raid}
+                    isSelected={pokemon.shiny.raid}
                     color="secondary"
                   >
                     Incursiones
@@ -79,7 +81,7 @@ export default function PokemonModal({ selection }: any) {
                   <Checkbox
                     value="research"
                     isDisabled
-                    isSelected={pokemon.research}
+                    isSelected={pokemon.shiny.research}
                     color="secondary"
                   >
                     Investigaciones
@@ -87,7 +89,7 @@ export default function PokemonModal({ selection }: any) {
                   <Checkbox
                     value="egg"
                     isDisabled
-                    isSelected={pokemon.egg}
+                    isSelected={pokemon.shiny.egg}
                     color="secondary"
                   >
                     Huevos

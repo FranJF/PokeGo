@@ -9,8 +9,8 @@ export const siteConfig = {
       href: "/",
     },
     {
-      label: "Shiny",
-      href: "/shiny",
+      label: "About",
+      href: "/about",
     },
   ],
   navMenuItems: [
@@ -19,8 +19,8 @@ export const siteConfig = {
       href: "/",
     },
     {
-      label: "Shiny",
-      href: "/shiny",
+      label: "About",
+      href: "/about",
     },
   ],
   links: {

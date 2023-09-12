@@ -11,7 +11,7 @@ export class PokemonController {
   static async getPokemon(name: string): Promise<Pokemon> {
     name = name.toLowerCase();
 
-    const all: string[] = await getAll();
+    const all: string[] = getAll();
     if (!all.includes(name)) return {} as Pokemon;
 
     const model = new PokemonModel(name);
@@ -21,6 +21,7 @@ export class PokemonController {
     const shiny: PokemonShiny = await getShiny(name);
     const image: PokemonImage = await getImage(name);
     const evolutions: PokemonEvolution = await getEvolution(name);
+
     const pokemon: Pokemon = await model.create(name, shiny, image, evolutions);
     return pokemon;
   }

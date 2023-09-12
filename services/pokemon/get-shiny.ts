@@ -10,8 +10,12 @@ export type PokemonShiny = {
   photobomb: boolean;
 };
 
+const PROBLEMATIC_POKEMONS: string[] = ["giratina-altered", "giratina-origin"];
+
 export async function getShiny(n: string): Promise<PokemonShiny | any> {
-  const name = n.toLowerCase().split("-")[0];
+  if (PROBLEMATIC_POKEMONS.includes(n)) n = n.split("-")[0];
+
+  const name = n.toLowerCase();
   const shinys = await fetch(URL).then((res) => res.json());
 
   const shinyPokemonsParsed: object[] = Object.values(shinys);

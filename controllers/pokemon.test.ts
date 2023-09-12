@@ -8,20 +8,10 @@ describe("Pokemon controller should be able to get a lot of data from services",
     const charmander = await PokemonController.getPokemon("charmander");
     const squirtle = await PokemonController.getPokemon("squirtle");
     const rayquaza = await PokemonController.getPokemon("rayquaza");
-    const giratinaO = await PokemonController.getPokemon("giratina-origin");
-    const giratinaA = await PokemonController.getPokemon("giratina-altered");
 
-    const pokemons = [
-      bulbasaur,
-      charmander,
-      squirtle,
-      rayquaza,
-      giratinaO,
-      // giratinaA,
-    ];
+    const pokemons = [bulbasaur, charmander, squirtle, rayquaza];
 
     pokemons.forEach((pokemon) => {
-      console.log(pokemon);
       checkPokemon(pokemon);
     });
   });

@@ -10,8 +10,9 @@ export const PokemonSelect = ({ data }: any) => {
       <Select
         items={data}
         label="Pokemon"
-        placeholder="Selecciona un Pokemon"
+        placeholder="Select your Pokemon"
         className="max-w-lg"
+        variant="underlined"
         onChange={(e) => setSelected(e.target.value)}
       >
         {data.map((pokemon: any) => (

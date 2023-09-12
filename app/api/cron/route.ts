@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { Client } from "@/database/client";
 import { getAll } from "@/services/pokemon/get-all";
-import { Pokemon } from "@/models/pokemon";
 import { PokemonController } from "@/controllers/pokemon";
+import { Client } from "@/database/client";
+import { Pokemon } from "@/models/pokemon";
 
 export async function GET() {
   await syncAllPokemons();
@@ -11,9 +11,9 @@ export async function GET() {
 
 async function syncAllPokemons() {
   const db = await Client.connect();
-
   const collection = db.collection("pokemon");
-  const all: string[] = await getAll();
+
+  const all: string[] = getAll();
   all.forEach(async (name) => {
     const pokemon: Pokemon = await PokemonController.getPokemon(name);
     if (pokemon) {
