@@ -42,7 +42,6 @@ export const usePokemon = ({ selectedPokemon }: any) => {
         return res.json();
       })
       .then((data: any) => {
-        console.log(data);
         setPokemon(data);
         localStorage.setItem(selectedPokemon, JSON.stringify(data));
       })

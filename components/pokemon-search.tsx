@@ -2,22 +2,28 @@
 
 import { Input } from "@nextui-org/input";
 import { PokemonSelect } from "@/components/select";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
 
-export const PokemonSearch = ({ data }: any) => {
+export function PokemonSearch({ data }: any) {
   const [dataInput, setDataInput] = useState("");
   const [dataSelect, setDataSelect] = useState([]);
-
-  useEffect(() => {
-    if (dataInput.length >= 3) {
+  const searchPokemon = useDebouncedCallback((value: string) => {
+    if (value.length >= 3) {
       const nombrePokemon = data.filter((item: string) =>
-        item.toLowerCase().includes(dataInput.toLowerCase()),
+        item.toLowerCase().includes(value.toLowerCase()),
       );
       setDataSelect(nombrePokemon);
       return;
     }
     setDataSelect([]);
-  }, [dataInput]);
+  }, 300);
+
+  const handleChange = (e: any) => {
+    const value = e.target.value;
+    setDataInput(value);
+    searchPokemon(value);
+  };
 
   return (
     <>
@@ -25,11 +31,14 @@ export const PokemonSearch = ({ data }: any) => {
         <Input
           isClearable
           type="text"
-          value={dataInput}
           variant="bordered"
           label="Search a Pokemon"
-          onChange={(e) => setDataInput(e.target.value)}
-          onClear={() => setDataInput("")}
+          value={dataInput}
+          onChange={handleChange}
+          onClear={() => {
+            setDataInput("");
+            setDataSelect([]);
+          }}
         />
       </div>
       <div className="inline-block w-full h-full max-w-lg text-center justify-center items-center">
@@ -37,4 +46,4 @@ export const PokemonSearch = ({ data }: any) => {
       </div>
     </>
   );
-};
+}
